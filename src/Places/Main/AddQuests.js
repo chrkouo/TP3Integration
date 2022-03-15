@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 
 import { db } from "../../firebase.js";
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { collection, addDoc} from "firebase/firestore";
 
 function AddQuests(props) {
   const userId = props.userId;

@@ -1,40 +1,41 @@
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-
+import * as React from "react";
 import { useEffect } from "react";
-//import Checkbox from '@mui/material/Checkbox';
+import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
 import { Box } from "@mui/system";
-//import Button from "@mui/material/Button";
+import Button from "@mui/material/Button";
 import {
   collection,
   query,
-  orderBy,
   onSnapshot,
   doc,
   updateDoc,
   deleteDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../../firebase.js";
 
 function Quests(props) {
   const { userId } = props;
-  // const [checked, setChecked] = useState(completed);
+  const [checked, setChecked] = useState();
 
   const [quest, setQuest] = useState([]);
 
-  // const handleChange = async () => {
-  //   const taskDocRef = doc(db, "adventurerDB/quests", userId);
-  //   try {
-  //     await updateDoc(taskDocRef, {
-  //       completed: checked,
-  //     });
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
-  const handleDelete = async () => {
-    const taskDocRef = doc(db, "adventurerDB/quests", userId);
+  const handleChange = async (e, id) => {
+    const taskDocRef = doc(db, "adventurerDB", userId, "quests", id);
+    try {
+      await updateDoc(taskDocRef, {
+        completed: checked,
+      });
+    } catch (err) {
+      alert(err);
+    }
+    setChecked(!e.target.completed);
+  };
+  const handleDelete = async (id) => {
+    const taskDocRef = doc(db, "adventurerDB", userId, "quests", id);
     try {
       await deleteDoc(taskDocRef);
     } catch (err) {
@@ -44,9 +45,10 @@ function Quests(props) {
 
   useEffect(() => {
     const taskColRef = query(
-      collection(db, "adventurerDB", "quests", userId),
-      orderBy("created", "desc")
+      collection(db, "adventurerDB", userId, "quests"),
+      where("userId", "==", userId)
     );
+    console.log(taskColRef);
     onSnapshot(taskColRef, (snapshot) => {
       setQuest(
         snapshot.docs.map((doc) => ({
@@ -56,63 +58,26 @@ function Quests(props) {
       );
     });
   }, []);
-
+  console.log(quest);
   const myQuest = quest.map((a) => (
-    // <Paper
-    //   elevation={10}
-    //   sx={{
-    //     padding: "15px",
-    //     heigth: "400px",
-    //   }}
-    // >
-    //   {" "}
-    //   <Typography variant="h6">{a.name}</Typography>
-    //   <Typography>level {a.userId}</Typography>
-    //   {/* <Button onSubmit={() => (onChange = { handleChange })} noValidate>
-    //     COMPLETE
-    //   </Button> */}
-    //   <div>
-    //     <input
-    //       id={`checkbox-${userId}`}
-    //       className="checkbox-custom"
-    //       name="checkbox"
-    //       checked={checked}
-    //       onChange={handleChange}
-    //       type="checkbox"
-    //     />
-    //     <label
-    //       htmlFor={`checkbox-${userId}`}
-    //       className="checkbox-custom-label"
-    //       onClick={() => setChecked(!checked)}
-    //     ></label>
-    //     </div>
-    // </Paper>
     <div>
+      <Checkbox
+        checked={checked}
+        label={a.data.name}
+        onChange={handleChange}
+        inputProps={{ "aria-label": "controlled" }}
+      ></Checkbox>
+      {a.data.name}
+
       <div>
-        <input
-          id={`checkbox-${a.userId}`}
-          className="checkbox-custom"
-          name="checkbox"
-          // checked={checked}
-          // onChange={handleChange}
-          type="checkbox"
-        />
-        <label
-          htmlFor={`checkbox-${a.userId}`}
-          className="checkbox-custom-label"
-          // onClick={() => setChecked(!checked)}
-        ></label>
-      </div>
-      <div>
-        <div>
-          <div>
-            <button onClick={handleDelete}>Delete</button>
-          </div>
-        </div>
+        {" "}
+        <Button onClick={handleDelete} variant="contained">
+          Delete
+        </Button>
       </div>
     </div>
   ));
-  debugger;
+
   return (
     <Paper
       elevation={10}

@@ -122,10 +122,7 @@ const MainPage = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "64px" }}>
         <Routes>
-          <Route
-            path="/addQuests"
-            element={<AddQuests userId={userId} />}
-          />
+          <Route path="/addQuests" element={<AddQuests userId={userId} />} />
           <Route path="/quests" element={<Quests userId={userId} />} />
         </Routes>
       </Box>

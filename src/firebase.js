@@ -43,7 +43,7 @@ const signInWithGoogle = async () => {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
     const q = query(
-      collection(db, "adventurerDB"),
+      collection(db, "adventurerDB", user.uid),
       where("uid", "==", user.uid)
     );
     const docs = await getDocs(q);
@@ -53,8 +53,6 @@ const signInWithGoogle = async () => {
         name: user.displayName,
         authProvider: "google",
         email: user.email,
-        quests: [],
-        xp: 0,
       });
     }
   } catch (err) {
@@ -77,8 +75,6 @@ const signInWithGitHub = async () => {
         name: user.displayName,
         authProvider: "gitHub",
         email: user.email,
-        quests: [],
-        xp: 0,
       });
     }
   } catch (err) {
