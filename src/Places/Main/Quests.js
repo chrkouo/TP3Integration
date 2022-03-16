@@ -19,11 +19,10 @@ import { db } from "../../firebase.js";
 
 function Quests(props) {
   const { userId } = props;
-  const [checked, setChecked] = useState();
-
+  let completed = false;
+  const [checked, setChecked] = useState(completed);
   const [quest, setQuest] = useState([]);
-
-  const handleChange = async (e, id) => {
+  async function handleChange(id) {
     const taskDocRef = doc(db, "adventurerDB", userId, "quests", id);
     try {
       await updateDoc(taskDocRef, {
@@ -32,16 +31,15 @@ function Quests(props) {
     } catch (err) {
       alert(err);
     }
-    setChecked(!e.target.completed);
-  };
-  const handleDelete = async (id) => {
+  }
+  async function handleDelete(id) {
     const taskDocRef = doc(db, "adventurerDB", userId, "quests", id);
     try {
       await deleteDoc(taskDocRef);
     } catch (err) {
       alert(err);
     }
-  };
+  }
 
   useEffect(() => {
     const taskColRef = query(
@@ -54,27 +52,48 @@ function Quests(props) {
         snapshot.docs.map((doc) => ({
           id: doc.id,
           data: doc.data(),
+          completed: doc.data().completed,
         }))
       );
+      // setChecked(
+      //   snapshot.docs.map((doc) => ({
+      //     completed: doc.data().completed,
+      //   }))
+      // );
     });
   }, []);
   console.log(quest);
   const myQuest = quest.map((a) => (
     <div>
-      <Checkbox
-        checked={checked}
-        label={a.data.name}
-        onChange={handleChange}
-        inputProps={{ "aria-label": "controlled" }}
-      ></Checkbox>
-      {a.data.name}
+      <Paper
+        elevation={10}
+        sx={{
+          padding: "15px",
+          heigth: "400px",
+        }}
+      >
+        <Checkbox
+          id={a.id}
+          checked={checked}
+          label={a.data.name}
+          onClick={() => setChecked(true)}
+          onChange={() => handleChange(a.id)}
+          inputProps={{ "aria-label": "controlled" }}
+        ></Checkbox>
+        {a.data.name}
 
-      <div>
-        {" "}
-        <Button onClick={handleDelete} variant="contained">
-          Delete
-        </Button>
-      </div>
+        <div>
+          {" "}
+          <Button
+            id={a.id}
+            onClick={() => handleDelete(a.id)}
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </div>
+      </Paper>
+      <br />
     </div>
   ));
 
