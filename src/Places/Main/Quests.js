@@ -22,12 +22,14 @@ function Quests(props) {
   let completed = false;
   const [checked, setChecked] = useState(completed);
   const [quest, setQuest] = useState([]);
-  async function handleChange(id) {
+  async function handleChange(id, checked) {
     const taskDocRef = doc(db, "adventurerDB", userId, "quests", id);
+    console.log(checked);
     try {
-      await updateDoc(taskDocRef, {
-        completed: checked,
+      let one = await updateDoc(taskDocRef, {
+        completed: !checked,
       });
+      console.log(one)
     } catch (err) {
       alert(err);
     }
@@ -69,10 +71,9 @@ function Quests(props) {
       >
         <Checkbox
           id={a.id}
-          checked={checked}
+          checked={a.data.completed}
           label={a.data.name}
-          onClick={() => setChecked(true)}
-          onChange={() => handleChange(a.id)}
+          onChange={() => handleChange(a.id, a.data.completed)}
           inputProps={{ "aria-label": "controlled" }}
         ></Checkbox>
         {a.data.name}
