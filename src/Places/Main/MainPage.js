@@ -52,25 +52,7 @@ const MainPage = () => {
     fetchUserName();
   }, [user, loading]);
 
-  // const [level, setLevel] = useState(0);
-  // let oneLevel = Math.floor(level/100);
-  // const navigate = useNavigate();
-  // const f = async () => {
-  //   try {
-  //     const result = await axios({
-  //       method: "get",
-  //       url: "http://localhost:3001/me",
-  //       headers: {
-  //         Authorization: "BEARER " + token,
-  //       },
-  //     });
-  //     console.log(result.data)
-  //     setLevel(result.data.xp);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-  // f();
+  
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar

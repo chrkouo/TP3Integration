@@ -55,11 +55,6 @@ function Quests(props) {
           completed: doc.data().completed,
         }))
       );
-      // setChecked(
-      //   snapshot.docs.map((doc) => ({
-      //     completed: doc.data().completed,
-      //   }))
-      // );
     });
   }, []);
   console.log(quest);

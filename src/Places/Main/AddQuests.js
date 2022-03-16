@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 
 import { db } from "../../firebase.js";
-import { collection, addDoc} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 function AddQuests(props) {
   const userId = props.userId;
@@ -48,26 +48,6 @@ function AddQuests(props) {
           autoFocus
         />
 
-        {/* <TextField
-          required
-          sx={{ m: 1, width: "65ch" }}
-          id="level"
-          label="Level"
-          name="level"
-          autoComplete="level"
-          defaultValue="0"
-          autoFocus
-        />
-        <TextField
-          required
-          sx={{ m: 1, width: "65ch" }}
-          id="completionXp"
-          label="CompletionXp"
-          name="completionXp"
-          autoComplete="completionXp"
-          defaultValue="0"
-          autoFocus
-        /> */}
         <Button
           type="submit"
           fullWidth
