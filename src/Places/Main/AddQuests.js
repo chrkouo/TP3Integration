@@ -12,7 +12,6 @@ import { collection, addDoc } from "firebase/firestore";
 function AddQuests(props) {
   const userId = props.userId;
   const [name, setName] = useState("");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

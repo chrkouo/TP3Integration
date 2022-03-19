@@ -19,8 +19,6 @@ import { db } from "../../firebase.js";
 
 function Quests(props) {
   const { userId } = props;
-  let completed = false;
-  const [checked, setChecked] = useState(completed);
   const [quest, setQuest] = useState([]);
   async function handleChange(id, checked) {
     const taskDocRef = doc(db, "adventurerDB", userId, "quests", id);
